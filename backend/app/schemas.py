@@ -1,65 +1,43 @@
-from pydantic import BaseModel
-from typing import Optional, List
-from datetime import datetime
+from pydantic import BaseModel, EmailStr
+from typing import Optional
 import uuid
-from enum import Enum
 
-class StatusEnum(str, Enum):
-    todo = "todo"
-    in_progress = "in_progress"
-    done = "done"
+# ---------- User ----------
+class UserBase(BaseModel):
+    name: str
+    email: EmailStr
 
-# USERS
-class UserCreate(BaseModel):
-    email: str
-    name: Optional[str] = None
+class UserCreate(UserBase):
+    password_hash: str
 
-class UserOut(BaseModel):
+class UserResponse(UserBase):
     id: uuid.UUID
-    email: str
-    name: Optional[str]
-    created_at: datetime
-
     class Config:
         orm_mode = True
 
-# PROJECTS
-class ProjectCreate(BaseModel):
-    user_id: uuid.UUID
+# ---------- Project ----------
+class ProjectBase(BaseModel):
     name: str
     description: Optional[str] = None
 
-class ProjectOut(BaseModel):
-    id: uuid.UUID
+class ProjectCreate(ProjectBase):
     user_id: uuid.UUID
-    name: str
-    description: Optional[str]
-    created_at: datetime
 
+class ProjectResponse(ProjectBase):
+    id: uuid.UUID
     class Config:
         orm_mode = True
 
-# MILESTONES
-class MilestoneCreate(BaseModel):
-    project_id: uuid.UUID
+# ---------- Milestone ----------
+class MilestoneBase(BaseModel):
     title: str
     description: Optional[str] = None
-    due_date: Optional[datetime] = None
+    status: str
 
-class MilestoneUpdate(BaseModel):
-    title: Optional[str]
-    description: Optional[str]
-    status: Optional[StatusEnum]
-    due_date: Optional[datetime]
-
-class MilestoneOut(BaseModel):
-    id: uuid.UUID
+class MilestoneCreate(MilestoneBase):
     project_id: uuid.UUID
-    title: str
-    description: Optional[str]
-    status: StatusEnum
-    created_at: datetime
-    due_date: Optional[datetime]
 
+class MilestoneResponse(MilestoneBase):
+    id: uuid.UUID
     class Config:
         orm_mode = True
