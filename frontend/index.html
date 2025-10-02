@@ -1,0 +1,95 @@
+<!-- devops-tracker/frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DevOps Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { margin-top: 30px; }
+    input, button { margin: 5px; padding: 5px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <h1>🚀 DevOps Tracker Dashboard</h1>
+
+  <!-- Users -->
+  <h2>Users</h2>
+  <ul id="usersList"></ul>
+
+  <!-- Projects -->
+  <h2>Projects</h2>
+  <input type="text" id="projectName" placeholder="Project name">
+  <input type="text" id="projectDesc" placeholder="Project description">
+  <button onclick="createProject()">Add Project</button>
+  <ul id="projectsList"></ul>
+
+  <!-- Milestones -->
+  <h2>Milestones</h2>
+  <input type="text" id="milestoneName" placeholder="Milestone name">
+  <input type="text" id="milestoneProj" placeholder="Project ID">
+  <button onclick="createMilestone()">Add Milestone</button>
+  <ul id="milestonesList"></ul>
+
+  <script>
+    const backendUrl = "http://localhost:8000";
+
+    async function fetchUsers() {
+      const res = await fetch(`${backendUrl}/users/`);
+      const users = await res.json();
+      const ul = document.getElementById("usersList");
+      ul.innerHTML = "";
+      users.forEach(u => ul.innerHTML += `<li>${u.id}: ${u.name} (${u.email})</li>`);
+    }
+
+    async function fetchProjects() {
+      const res = await fetch(`${backendUrl}/projects/`);
+      const projects = await res.json();
+      const ul = document.getElementById("projectsList");
+      ul.innerHTML = "";
+      projects.forEach(p => ul.innerHTML += `<li>${p.id}: ${p.name} - ${p.description}</li>`);
+    }
+
+    async function fetchMilestones() {
+      const res = await fetch(`${backendUrl}/milestones/`);
+      const milestones = await res.json();
+      const ul = document.getElementById("milestonesList");
+      ul.innerHTML = "";
+      milestones.forEach(m => ul.innerHTML += `<li>${m.id}: ${m.name} (Project ${m.project_id})</li>`);
+    }
+
+    async function createProject() {
+      const name = document.getElementById("projectName").value;
+      const description = document.getElementById("projectDesc").value;
+      await fetch(`${backendUrl}/projects/`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, description})
+      });
+      document.getElementById("projectName").value = "";
+      document.getElementById("projectDesc").value = "";
+      fetchProjects();
+    }
+
+    async function createMilestone() {
+      const name = document.getElementById("milestoneName").value;
+      const project_id = parseInt(document.getElementById("milestoneProj").value);
+      await fetch(`${backendUrl}/milestones/`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, project_id})
+      });
+      document.getElementById("milestoneName").value = "";
+      document.getElementById("milestoneProj").value = "";
+      fetchMilestones();
+    }
+
+    // Load all lists initially
+    fetchUsers();
+    fetchProjects();
+    fetchMilestones();
+  </script>
+</body>
+</html>
