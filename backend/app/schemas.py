@@ -1,53 +1,50 @@
 from pydantic import BaseModel
-from uuid import UUID
 from datetime import datetime
 from typing import Optional
 
-# --- User Schemas ---
+# Users
 class UserBase(BaseModel):
-    name: str
+    username: str
     email: str
+    full_name: Optional[str] = None
 
 class UserCreate(UserBase):
-    password: str
+    pass
 
 class UserResponse(UserBase):
-    id: UUID
+    id: int
     created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
-# --- Project Schemas ---
+# Projects
 class ProjectBase(BaseModel):
     name: str
     description: Optional[str] = None
 
 class ProjectCreate(ProjectBase):
-    user_id: UUID
+    pass
 
 class ProjectResponse(ProjectBase):
-    id: UUID
-    user_id: UUID
+    id: int
     created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
-# --- Milestone Schemas ---
+# Milestones
 class MilestoneBase(BaseModel):
     title: str
-    description: str | None = None
-    status: str | None = None
-    due_date: datetime | None = None
+    due_date: Optional[datetime] = None
+    project_id: Optional[int] = None
 
 class MilestoneCreate(MilestoneBase):
-    project_id: UUID  # link to project
+    pass
 
 class MilestoneResponse(MilestoneBase):
-    id: UUID
-    project_id: UUID
+    id: int
     created_at: datetime
 
     class Config:
-        from_attributes = True
+        orm_mode = True

@@ -1,40 +1,31 @@
-import uuid
-from sqlalchemy import Column, String, ForeignKey, Text, DateTime, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from .database import Base
 
+# Users
 class User(Base):
     __tablename__ = "users"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
-    password_hash = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    full_name = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    projects = relationship("Project", back_populates="owner")
-
+# Projects
 class Project(Base):
     __tablename__ = "projects"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    description = Column(Text)
+    description = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-    owner = relationship("User", back_populates="projects")
     milestones = relationship("Milestone", back_populates="project")
 
+# Milestones
 class Milestone(Base):
     __tablename__ = "milestones"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"))
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    description = Column(Text)
+    due_date = Column(DateTime)
+    project_id = Column(Integer, ForeignKey("projects.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    status = Column(String, default="pending")
-
     project = relationship("Project", back_populates="milestones")
