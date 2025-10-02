@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, ForeignKey, Text
+from sqlalchemy import Column, String, ForeignKey, Text, DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from .database import Base
@@ -11,6 +11,7 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     projects = relationship("Project", back_populates="owner")
 
@@ -21,6 +22,7 @@ class Project(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     name = Column(String, nullable=False)
     description = Column(Text)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     owner = relationship("User", back_populates="projects")
     milestones = relationship("Milestone", back_populates="project")
@@ -32,6 +34,7 @@ class Milestone(Base):
     project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"))
     title = Column(String, nullable=False)
     description = Column(Text)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(String, default="pending")
 
     project = relationship("Project", back_populates="milestones")
