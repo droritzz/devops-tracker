@@ -1,264 +1,91 @@
-# 🚀 DevOps Tracker🚀 Project Milestones
+# DevOps Tracker. Project Milestones
 
-Milestone 1: Core App (Local)
+### Milestone 1: Core App (Local)
 
-A comprehensive project milestone tracking application that demonstrates modern DevOps practices and cloud-native technologies.✅ Goal: Have a working app + DB locally.
+Goal: Have a working app + DB locally.
 
-    • Features:
+Features:
+1. User can add a project (e.g., “DevOps Learning”).
+2. Add milestones (title, description, status: Todo/In Progress/Done).
+3. View progress dashboard
 
-## 🎯 Project Overview        ○ User can add a project (e.g., “DevOps Learning”).
+Stack:
+1. Backend: FastAPI (Python) or Express.js (Node).
+2. DB: PostgreSQL (via docker-compose).
+3. Frontend: Simple React.
 
-        ○ Add milestones (title, description, status: Todo/In Progress/Done).
+Deliverable: App runs with docker-compose up.
 
-This application allows users to track project milestones and progress, built with a modern stack and deployed using industry-standard DevOps practices. The project serves as a practical learning journey through the entire DevOps ecosystem.        ○ View progress dashboard (e.g., % completed).
+### Milestone 2: Containerization
 
-    • Stack:
+Goal: Run the app in Docker.
 
-## 🏗️ Architecture        ○ Backend: FastAPI (Python) or Express.js (Node).
+1. Write Dockerfile for backend + frontend.
+2. Update docker-compose.yml to use images.
+3. Test locally with containers only.
 
-        ○ DB: PostgreSQL (via docker-compose).
+### Milesetone 3: CI/CD with GitHub Action
 
-- **Backend**: FastAPI (Python)        ○ Frontend: Simple React (with Tailwind).
+Goal: Automated builds & pushes.
+1. Create workflow: run tests, build and push images to Dockerhub (later ECR)
+2. Add build statuses
 
-- **Frontend**: React with Tailwind CSS    • Deliverable: App runs with docker-compose up.
+Deliverable: Every push to main builds & pushes new Docker image.
 
-- **Database**: PostgreSQL
+### Milestone 4: Infrastructure as Code (Terraform)
 
-- **Containerization**: Docker & Docker ComposeMilestone 2: Containerization
+Goal: Provision cloud infra for CI/CD.
+1. Use Terraform to create ECR, runners, EKS cluster, DB
+2. Create IAM roles to manage and access the env
 
-- **Orchestration**: Kubernetes✅ Goal: Run the app in Docker.
+Deliverable: CI/CD now pushes to AWS ECR instead of DockerHub. 
 
-- **CI/CD**: GitHub Actions    • Write Dockerfile for backend + frontend.
+### Milestone 5: Kubernetes (Local)
 
-- **Infrastructure**: Terraform (AWS)    • Update docker-compose.yml to use images.
+Goal: Run your SaaS app in a local k8s cluster.
+1. Set up minikube.
+2. Write k8s manifests
+3. Deployment (backend, frontend).
+4. Service (ClusterIP for DB, NodePort/Ingress for frontend/backend).
+5. ConfigMaps + Secrets (DB creds).
 
-- **GitOps**: ArgoCD    • Test locally with containers only.
+Deliverable: App accessible at http://localhost:3000.
 
-- **Monitoring**: Prometheus & Grafana
+### Milestone 6: GitOps with ArgoCD
 
-Milestone 3: CI/CD with GitHub Actions
+Goal: Automate k8s deployments.
 
-## 📋 Project Milestones✅ Goal: Automated builds & pushes.
+1. Install ArgoCD in your cluster.
+2. Create separate GitOps repo with manifests.
+3. Configure ArgoCD to sync that repo.
 
-    • Create workflow:
+Deliverable: Pushing YAML → Argo updates cluster automatically.
 
-### Milestone 1: Core App (Local) ✅        ○ Run tests.
+### Milestone 7: Cloud Deployment
 
-**Goal**: Have a working app + DB locally        ○ Build & push images to DockerHub (later → AWS ECR).
+Goal: Deploy to cloud k8s.
 
-    • Add badges (build status) to your repo.
+1. Use Terraform to create an EKS cluster (or DigitalOcean/GKE if simpler).
+2. Point ArgoCD at cloud cluster.
 
-**Features**:    • Deliverable: Every push to main builds & pushes new Docker image.
+Deliverable: The app is live on the internet.
 
-- User can add a project (e.g., "DevOps Learning")
+### Milestone 8: Security
 
-- Add milestones (title, description, status: Todo/In Progress/Done)Milestone 4: Infrastructure as Code (Terraform)
+Goal: Add security best practices.
 
-- View progress dashboard (e.g., % completed)✅ Goal: Provision cloud infra for CI/CD.
+1. Add container scanning (Trivy) in CI.
+2. Store secrets properly (k8s secrets, or sealed-secrets).
+3. Restrict IAM permissions for CI/CD.
 
-    • Use Terraform to:
+Deliverable: Security checks integrated in CI.
 
-**Stack**:        ○ Create ECR repo (for images).
+### Milestone 9: Observability
 
-- Backend: FastAPI (Python) or Express.js (Node)        ○ Create IAM role for GitHub Actions.
+Goal: Add monitoring/logging.
 
-- DB: PostgreSQL (via docker-compose)    • Deliverable: CI/CD now pushes to AWS ECR instead of DockerHub.
+1. Install Prometheus + Grafana for metrics.
+2. Install Loki/EFK for logs.
+3. Add dashboards for app + cluster health.
 
-- Frontend: Simple React (with Tailwind)
-
-Milestone 5: Kubernetes (Local)
-
-**Deliverable**: App runs with `docker-compose up`✅ Goal: Run your SaaS app in a local k8s cluster.
-
-    • Set up kind or minikube.
-
-### Milestone 2: Containerization ✅    • Write k8s manifests:
-
-**Goal**: Run the app in Docker        ○ Deployment (backend, frontend).
-
-        ○ Service (ClusterIP for DB, NodePort/Ingress for frontend/backend).
-
-**Tasks**:        ○ ConfigMaps + Secrets (DB creds).
-
-- Write Dockerfile for backend + frontend    • Deliverable: App accessible at http://localhost:3000.
-
-- Update docker-compose.yml to use images
-
-- Test locally with containers onlyMilestone 6: GitOps with ArgoCD
-
-✅ Goal: Automate k8s deployments.
-
-### Milestone 3: CI/CD with GitHub Actions ✅    • Install ArgoCD in your cluster.
-
-**Goal**: Automated builds & pushes    • Create separate GitOps repo with manifests.
-
-    • Configure ArgoCD to sync that repo.
-
-**Tasks**:    • Deliverable: Pushing YAML → Argo updates cluster automatically.
-
-- Create workflow:
-
-  - Run testsMilestone 7: Cloud Deployment
-
-  - Build & push images to DockerHub (later → AWS ECR)✅ Goal: Deploy to cloud k8s.
-
-- Add badges (build status) to your repo    • Use Terraform to create an EKS cluster (or DigitalOcean/GKE if simpler).
-
-    • Point ArgoCD at cloud cluster.
-
-**Deliverable**: Every push to main builds & pushes new Docker image    • Deliverable: Your app is live on the internet 🌍
-
-
-
-### Milestone 4: Infrastructure as Code (Terraform) ✅Milestone 8: Security
-
-**Goal**: Provision cloud infra for CI/CD✅ Goal: Add security best practices.
-
-    • Add container scanning (Trivy) in CI.
-
-**Tasks**:    • Store secrets properly (k8s secrets, or sealed-secrets).
-
-- Use Terraform to:    • Restrict IAM permissions for CI/CD.
-
-  - Create ECR repo (for images)    • Deliverable: Security checks integrated in CI.
-
-  - Create IAM role for GitHub Actions
-
-Milestone 9: Observability
-
-**Deliverable**: CI/CD now pushes to AWS ECR instead of DockerHub✅ Goal: Add monitoring/logging.
-
-    • Install Prometheus + Grafana for metrics.
-
-### Milestone 5: Kubernetes (Local) ✅    • Install Loki/EFK for logs.
-
-**Goal**: Run your SaaS app in a local k8s cluster    • Add dashboards for app + cluster health.
-
-    • Deliverable: Grafana dashboard shows your app’s progress data + k8s metrics.
-
-**Tasks**:
-
-- Set up kind or minikubeMilestone 10: SaaS Features (Stretch Goal)
-
-- Write k8s manifests:✅ Goal: Make it a real SaaS app.
-
-  - Deployment (backend, frontend)    • User accounts + authentication (Supabase/Auth0).
-
-  - Service (ClusterIP for DB, NodePort/Ingress for frontend/backend)    • Multi-project support.
-
-  - ConfigMaps + Secrets (DB creds)    • Stripe subscriptions (free vs paid users).
-
-Invite teammates to track projects together.
-**Deliverable**: App accessible at http://localhost:3000
-
-### Milestone 6: GitOps with ArgoCD ✅
-**Goal**: Automate k8s deployments
-
-**Tasks**:
-- Install ArgoCD in your cluster
-- Create separate GitOps repo with manifests
-- Configure ArgoCD to sync that repo
-
-**Deliverable**: Pushing YAML → Argo updates cluster automatically
-
-### Milestone 7: Cloud Deployment ✅
-**Goal**: Deploy to cloud k8s
-
-**Tasks**:
-- Use Terraform to create an EKS cluster (or DigitalOcean/GKE if simpler)
-- Point ArgoCD at cloud cluster
-
-**Deliverable**: Your app is live on the internet 🌍
-
-### Milestone 8: Security ✅
-**Goal**: Add security best practices
-
-**Tasks**:
-- Add container scanning (Trivy) in CI
-- Store secrets properly (k8s secrets, or sealed-secrets)
-- Restrict IAM permissions for CI/CD
-
-**Deliverable**: Security checks integrated in CI
-
-### Milestone 9: Observability ✅
-**Goal**: Add monitoring/logging
-
-**Tasks**:
-- Install Prometheus + Grafana for metrics
-- Install Loki/EFK for logs
-- Add dashboards for app + cluster health
-
-**Deliverable**: Grafana dashboard shows your app's progress data + k8s metrics
-
-### Milestone 10: SaaS Features (Stretch Goal) ✅
-**Goal**: Make it a real SaaS app
-
-**Features**:
-- User accounts + authentication (Supabase/Auth0)
-- Multi-project support
-- Stripe subscriptions (free vs paid users)
-- Invite teammates to track projects together
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Docker & Docker Compose
-- Node.js & npm
-- Python 3.9+
-- kubectl (for Kubernetes deployment)
-- Terraform (for infrastructure)
-
-### Local Development
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd devops-tracker
-   ```
-
-2. Start the application:
-   ```bash
-   docker-compose up
-   ```
-
-3. Access the application:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-   - Database: localhost:5432
-
-## 📁 Project Structure
-
-```
-devops-tracker/
-├── backend/           # FastAPI backend application
-├── frontend/          # React frontend application
-├── k8s/              # Kubernetes manifests
-├── monitoring/       # Prometheus & Grafana configs
-├── terraform/        # Infrastructure as Code
-└── docker-compose.yml # Local development setup
-```
-
-## 🔧 Technologies Used
-
-- **Backend**: FastAPI, Python, PostgreSQL
-- **Frontend**: React, Tailwind CSS, JavaScript
-- **DevOps**: Docker, Kubernetes, GitHub Actions
-- **Infrastructure**: Terraform, AWS (EKS, ECR)
-- **Monitoring**: Prometheus, Grafana, Loki
-- **GitOps**: ArgoCD
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙋‍♀️ Support
-
-If you have any questions or need help, please open an issue or reach out to the maintainers.
+Deliverable: Grafana dashboard shows your app’s progress data + k8s metrics.
