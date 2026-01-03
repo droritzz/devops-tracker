@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from app.routers import users, projects, milestones
 from app import models, database
 import logging
@@ -25,6 +26,13 @@ app = FastAPI(title="🚀 DevOps Tracker API")
 @app.get("/")
 def root():
     return {"message": "🚀 DevOps Tracker API is running!"}
+
+# Favicon endpoint
+@app.get("/favicon.ico")
+async def favicon():
+    # Return a simple 204 No Content response to avoid 404 errors
+    from fastapi.responses import Response
+    return Response(status_code=204)
 
 # Register routers
 app.include_router(users.router)
