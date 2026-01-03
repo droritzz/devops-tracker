@@ -36,7 +36,7 @@ class ProjectResponse(ProjectBase):
 # Milestones
 class MilestoneBase(BaseModel):
     title: str
-    due_date: Optional[datetime] = None
+    description: Optional[str] = None
     project_id: Optional[int] = None
 
 class MilestoneCreate(MilestoneBase):
@@ -44,6 +44,7 @@ class MilestoneCreate(MilestoneBase):
 
 class MilestoneResponse(MilestoneBase):
     id: int
+    status: Optional[str] = None
     created_at: datetime
 
     class Config:
