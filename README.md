@@ -12,7 +12,7 @@ Features:
 Stack:
 1. Backend: FastAPI (Python) or Express.js (Node).
 2. DB: PostgreSQL (via docker-compose).
-3. Frontend: Simple React.
+3. Frontend: Simple JS and html.
 
 Deliverable: App runs with docker-compose up.
 
