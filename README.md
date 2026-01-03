@@ -1,5 +1,9 @@
 # DevOps Tracker. Project Milestones
 
+[![CI/CD Pipeline](https://github.com/your-username/devops-tracker/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/your-username/devops-tracker/actions/workflows/ci-cd.yml)
+[![Docker Backend](https://img.shields.io/badge/docker-backend-blue)](https://hub.docker.com/r/your-username/devops-tracker-backend)
+[![Docker Frontend](https://img.shields.io/badge/docker-frontend-blue)](https://hub.docker.com/r/your-username/devops-tracker-frontend)
+
 ### Milestone 1: Core App (Local)
 
 Goal: Have a working app + DB locally.

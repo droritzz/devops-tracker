@@ -1,95 +1,235 @@
-<!-- devops-tracker/frontend/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>DevOps Tracker</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h2 { margin-top: 30px; }
-    input, button { margin: 5px; padding: 5px; }
-    ul { list-style-type: none; padding-left: 0; }
-    li { margin-bottom: 5px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      padding: 0;
+    }
+    .header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .nav {
+      background-color: #34495e;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 1rem 2rem;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    .nav a:hover, .nav a.active {
+      background-color: #3498db;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .view {
+      display: none;
+    }
+    .view.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .btn {
+      background-color: #3498db;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    .btn:hover {
+      background-color: #2980b9;
+    }
+    .btn-danger {
+      background-color: #e74c3c;
+    }
+    .btn-danger:hover {
+      background-color: #c0392b;
+    }
+    .item-list {
+      margin-top: 2rem;
+    }
+    .item {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .item h4 {
+      margin: 0 0 0.5rem 0;
+      color: #2c3e50;
+    }
+    .item p {
+      margin: 0.25rem 0;
+      color: #666;
+    }
   </style>
 </head>
 <body>
-  <h1>🚀 DevOps Tracker Dashboard</h1>
+  <div class="header">
+    <h1>DevOps Tracker Dashboard</h1>
+  </div>
+  
+  <nav class="nav">
+    <a href="/" data-route="home">Dashboard</a>
+    <a href="/users" data-route="users">Users</a>
+    <a href="/projects" data-route="projects">Projects</a>
+    <a href="/milestones" data-route="milestones">Milestones</a>
+  </nav>
 
-  <!-- Users -->
-  <h2>Users</h2>
-  <ul id="usersList"></ul>
+  <div class="container">
+    <!-- Home View -->
+    <div id="home-view" class="view active">
+      <h2>Welcome to DevOps Tracker</h2>
+      <p>Manage your projects, users, and milestones efficiently.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 2rem;">
+        <div class="item" style="display: flex; flex-direction: column; height: 100%;">
+          <h4>👥 Users</h4>
+          <p style="flex-grow: 1;">Manage team members and user accounts</p>
+          <div style="margin-top: 1rem;">
+            <a href="/users" class="btn">Manage Users</a>
+          </div>
+        </div>
+        <div class="item" style="display: flex; flex-direction: column; height: 100%;">
+          <h4>📁 Projects</h4>
+          <p style="flex-grow: 1;">Create and organize your projects</p>
+          <div style="margin-top: 1rem;">
+            <a href="/projects" class="btn">Manage Projects</a>
+          </div>
+        </div>
+        <div class="item" style="display: flex; flex-direction: column; height: 100%;">
+          <h4>📋 Milestones</h4>
+          <p style="flex-grow: 1;">Track project milestones and progress</p>
+          <div style="margin-top: 1rem;">
+            <a href="/milestones" class="btn">Manage Milestones</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <!-- Projects -->
-  <h2>Projects</h2>
-  <input type="text" id="projectName" placeholder="Project name">
-  <input type="text" id="projectDesc" placeholder="Project description">
-  <button onclick="createProject()">Add Project</button>
-  <ul id="projectsList"></ul>
+    <!-- Users View -->
+    <div id="users-view" class="view">
+      <h2>👥 Users Management</h2>
+      
+      <div class="form-group">
+        <h3>Add New User</h3>
+        <form id="user-form">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName">
+          </div>
+          <button type="submit" class="btn">Add User</button>
+        </form>
+      </div>
 
-  <!-- Milestones -->
-  <h2>Milestones</h2>
-  <input type="text" id="milestoneName" placeholder="Milestone name">
-  <input type="text" id="milestoneProj" placeholder="Project ID">
-  <button onclick="createMilestone()">Add Milestone</button>
-  <ul id="milestonesList"></ul>
+      <div class="item-list">
+        <h3>All Users</h3>
+        <div id="users-list"></div>
+      </div>
+    </div>
 
-  <script>
-    const backendUrl = "http://localhost:8000";
+    <!-- Projects View -->
+    <div id="projects-view" class="view">
+      <h2>📁 Projects Management</h2>
+      
+      <div class="form-group">
+        <h3>Add New Project</h3>
+        <form id="project-form">
+          <div class="form-group">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" required>
+          </div>
+          <div class="form-group">
+            <label for="projectDesc">Description:</label>
+            <textarea id="projectDesc" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="projectOwner">Owner:</label>
+            <select id="projectOwner">
+              <option value="">Select Owner</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Add Project</button>
+        </form>
+      </div>
 
-    async function fetchUsers() {
-      const res = await fetch(`${backendUrl}/users/`);
-      const users = await res.json();
-      const ul = document.getElementById("usersList");
-      ul.innerHTML = "";
-      users.forEach(u => ul.innerHTML += `<li>${u.id}: ${u.name} (${u.email})</li>`);
-    }
+      <div class="item-list">
+        <h3>All Projects</h3>
+        <div id="projects-list"></div>
+      </div>
+    </div>
 
-    async function fetchProjects() {
-      const res = await fetch(`${backendUrl}/projects/`);
-      const projects = await res.json();
-      const ul = document.getElementById("projectsList");
-      ul.innerHTML = "";
-      projects.forEach(p => ul.innerHTML += `<li>${p.id}: ${p.name} - ${p.description}</li>`);
-    }
+    <!-- Milestones View -->
+    <div id="milestones-view" class="view">
+      <h2>📋 Milestones Management</h2>
+      
+      <div class="form-group">
+        <h3>Add New Milestone</h3>
+        <form id="milestone-form">
+          <div class="form-group">
+            <label for="milestoneTitle">Title:</label>
+            <input type="text" id="milestoneTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="milestoneDesc">Description:</label>
+            <textarea id="milestoneDesc" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="milestoneProject">Project:</label>
+            <select id="milestoneProject">
+              <option value="">Select Project</option>
+            </select>
+          </div>
+          <button type="submit" class="btn">Add Milestone</button>
+        </form>
+      </div>
 
-    async function fetchMilestones() {
-      const res = await fetch(`${backendUrl}/milestones/`);
-      const milestones = await res.json();
-      const ul = document.getElementById("milestonesList");
-      ul.innerHTML = "";
-      milestones.forEach(m => ul.innerHTML += `<li>${m.id}: ${m.name} (Project ${m.project_id})</li>`);
-    }
+      <div class="item-list">
+        <h3>All Milestones</h3>
+        <div id="milestones-list"></div>
+      </div>
+    </div>
+  </div>
 
-    async function createProject() {
-      const name = document.getElementById("projectName").value;
-      const description = document.getElementById("projectDesc").value;
-      await fetch(`${backendUrl}/projects/`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({name, description})
-      });
-      document.getElementById("projectName").value = "";
-      document.getElementById("projectDesc").value = "";
-      fetchProjects();
-    }
-
-    async function createMilestone() {
-      const name = document.getElementById("milestoneName").value;
-      const project_id = parseInt(document.getElementById("milestoneProj").value);
-      await fetch(`${backendUrl}/milestones/`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({name, project_id})
-      });
-      document.getElementById("milestoneName").value = "";
-      document.getElementById("milestoneProj").value = "";
-      fetchMilestones();
-    }
-
-    // Load all lists initially
-    fetchUsers();
-    fetchProjects();
-    fetchMilestones();
-  </script>
+  <script src="scripts.js"></script>
 </body>
 </html>
