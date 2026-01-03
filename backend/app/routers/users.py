@@ -6,7 +6,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("/", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    db_user = models.User(**user.dict())
+    db_user = models.Users(**user.dict())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -14,4 +14,4 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)
 
 @router.get("/", response_model=list[schemas.UserResponse])
 def list_users(db: Session = Depends(database.get_db)):
-    return db.query(models.User).all()
+    return db.query(models.Users).all()

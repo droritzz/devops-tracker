@@ -6,7 +6,7 @@ router = APIRouter(prefix="/projects", tags=["Projects"])
 
 @router.post("/", response_model=schemas.ProjectResponse)
 def create_project(project: schemas.ProjectCreate, db: Session = Depends(database.get_db)):
-    db_project = models.Project(**project.dict())
+    db_project = models.Projects(**project.dict())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
@@ -14,4 +14,4 @@ def create_project(project: schemas.ProjectCreate, db: Session = Depends(databas
 
 @router.get("/", response_model=list[schemas.ProjectResponse])
 def list_projects(db: Session = Depends(database.get_db)):
-    return db.query(models.Project).all()
+    return db.query(models.Projects).all()
