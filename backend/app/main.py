@@ -1,10 +1,22 @@
 from fastapi import FastAPI
 from app.routers import users, projects, milestones
 from app import models, database
+import logging
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Create all tables if they don't exist
-models.Base.metadata.create_all(bind=database.engine)
+# Wait for database to be ready and create tables
+try:
+    logger.info("Waiting for database to be ready...")
+    database.wait_for_db()
+    logger.info("Creating database tables...")
+    models.Base.metadata.create_all(bind=database.engine)
+    logger.info("Database tables created successfully")
+except Exception as e:
+    logger.error(f"Failed to initialize database: {e}")
+    raise
 
 # Initialize FastAPI app
 app = FastAPI(title="🚀 DevOps Tracker API")
