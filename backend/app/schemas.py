@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from typing import Optional
 
@@ -15,13 +15,13 @@ class UserResponse(UserBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Projects
 class ProjectBase(BaseModel):
     name: str
     description: Optional[str] = None
+    owner_id: Optional[int] = None
 
 class ProjectCreate(ProjectBase):
     pass
@@ -30,8 +30,7 @@ class ProjectResponse(ProjectBase):
     id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Milestones
 class MilestoneBase(BaseModel):
@@ -47,5 +46,4 @@ class MilestoneResponse(MilestoneBase):
     status: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
