@@ -1,31 +1,46 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, ForeignKey, Text, Enum, DateTime, func
 from sqlalchemy.orm import relationship
-from .database import Base
+from app.database import Base
+import enum
 
-# Users
-class User(Base):
+class StatusEnum(enum.Enum):
+    todo = "Todo"
+    in_progress = "In Progress"
+    done = "Done"
+
+
+class Users(Base):
     __tablename__ = "users"
+
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    full_name = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-# Projects
-class Project(Base):
+    projects = relationship("Projects", back_populates="owner")
+
+
+class Projects(Base):
     __tablename__ = "projects"
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    description = Column(String)
+    description = Column(Text)
+    owner_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    milestones = relationship("Milestone", back_populates="project")
 
-# Milestones
-class Milestone(Base):
+    owner = relationship("Users", back_populates="projects")
+    milestones = relationship("Milestones", back_populates="project")
+
+
+class Milestones(Base):
     __tablename__ = "milestones"
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    due_date = Column(DateTime)
+    description = Column(Text)
+    status = Column(Enum(StatusEnum), default=StatusEnum.todo)
     project_id = Column(Integer, ForeignKey("projects.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    project = relationship("Project", back_populates="milestones")
+
+    project = relationship("Projects", back_populates="milestones")
