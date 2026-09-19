@@ -1,0 +1,31 @@
+services:
+  backend:
+    image: your-username/devops-tracker-backend:latest
+    container_name: devops-tracker-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/devops_tracker
+    depends_on:
+      - db
+
+  frontend:
+    image: your-username/devops-tracker-frontend:latest
+    container_name: devops-tracker-frontend
+    ports:
+      - "3000:80"
+
+  db:
+    image: postgres:15
+    container_name: devops-tracker-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: devops_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
